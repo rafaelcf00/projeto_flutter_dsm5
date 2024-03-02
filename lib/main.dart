@@ -8,7 +8,7 @@ void main() => runApp(
           ),
           floatingActionButton: FloatingActionButton(
             onPressed: () {},
-            child: Icon(Icons.access_alarm_outlined),
+            child: Icon(Icons.add),
           ),
         ),
       ),
