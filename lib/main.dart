@@ -9,7 +9,7 @@ class BankApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
-        body: ListaTransferencias(),
+        body: FormularioTransferencia(),
       ),
     );
   }
@@ -30,7 +30,36 @@ class FormularioTransferencia extends StatelessWidget {
               color: Colors.white, fontSize: 30, fontWeight: FontWeight.bold),
         ),
       ),
-      body: Text('teste'),
+      body: Column(
+        children: const [
+          Padding(
+            padding: EdgeInsets.all(16.0),
+            child: TextField(
+              style: TextStyle(
+                fontSize: 20.0,
+              ),
+              decoration: InputDecoration(
+                labelText: 'Número da conta',
+                hintText: '0000',
+              ),
+              keyboardType: TextInputType.number,
+            ),
+          ),
+          Padding(
+            padding: EdgeInsets.all(16.0),
+            child: TextField(
+              style: TextStyle(
+                fontSize: 20.0,
+              ),
+              decoration: InputDecoration(
+                labelText: 'Valor R\$',
+                hintText: '0.00',
+              ),
+              keyboardType: TextInputType.number,
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
