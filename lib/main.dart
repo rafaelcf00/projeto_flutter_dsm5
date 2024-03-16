@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 void main() => runApp(BankApp());
 
 class BankApp extends StatelessWidget {
-  const BankApp({super.key});
+  BankApp({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +16,8 @@ class BankApp extends StatelessWidget {
 }
 
 class FormularioTransferencia extends StatelessWidget {
-  const FormularioTransferencia({super.key});
+  final TextEditingController _controladorCampoNumeroConta = TextEditingController();
+  final TextEditingController _controladorCampoValor = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -24,17 +25,18 @@ class FormularioTransferencia extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.blue,
-        title: const Text(
+        title: Text(
           'Nova Transferência',
           style: TextStyle(
               color: Colors.white, fontSize: 30, fontWeight: FontWeight.bold),
         ),
       ),
       body: Column(
-        children: const [
+        children: [
           Padding(
             padding: EdgeInsets.all(16.0),
             child: TextField(
+              controller: _controladorCampoNumeroConta,
               style: TextStyle(
                 fontSize: 20.0,
               ),
@@ -48,15 +50,26 @@ class FormularioTransferencia extends StatelessWidget {
           Padding(
             padding: EdgeInsets.all(16.0),
             child: TextField(
+              controller: _controladorCampoValor,
               style: TextStyle(
                 fontSize: 20.0,
               ),
               decoration: InputDecoration(
+                icon: Icon(Icons.monetization_on, color: Colors.green),
                 labelText: 'Valor R\$',
                 hintText: '0.00',
               ),
               keyboardType: TextInputType.number,
             ),
+          ),
+          ElevatedButton(
+            child: Text('Confirmar'),
+            onPressed: () {
+              debugPrint('clicou no confirmar');
+              final int numeroConta = int.parse(_controladorCampoNumeroConta.text);
+              final double valor = double.parse(_controladorCampoValor.text);
+              Transferencia(valor, numeroConta);
+            },
           ),
         ],
       ),
@@ -65,7 +78,7 @@ class FormularioTransferencia extends StatelessWidget {
 }
 
 class ListaTransferencias extends StatelessWidget {
-  const ListaTransferencias({super.key});
+  ListaTransferencias({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -73,7 +86,7 @@ class ListaTransferencias extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.blue,
-        title: const Text(
+        title: Text(
           'Transferências',
           style: TextStyle(
               color: Colors.white, fontSize: 30, fontWeight: FontWeight.bold),
@@ -89,7 +102,7 @@ class ListaTransferencias extends StatelessWidget {
       floatingActionButton: FloatingActionButton(
         backgroundColor: Colors.blue,
         onPressed: () {},
-        child: const Icon(Icons.add, color: Colors.white),
+        child: Icon(Icons.add, color: Colors.white),
       ),
     );
   }
