@@ -19,6 +19,8 @@ class FormularioTransferencia extends StatelessWidget {
   final TextEditingController _controladorCampoNumeroConta = TextEditingController();
   final TextEditingController _controladorCampoValor = TextEditingController();
 
+  FormularioTransferencia({super.key});
+  
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
