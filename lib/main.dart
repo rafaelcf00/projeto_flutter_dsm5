@@ -44,6 +44,7 @@ class FormularioTransferencia extends StatelessWidget {
               ),
               decoration: InputDecoration(
                 labelText: 'Número da conta',
+                hintStyle: TextStyle(color: Colors.grey),
                 hintText: '0000',
               ),
               keyboardType: TextInputType.number,
@@ -59,6 +60,7 @@ class FormularioTransferencia extends StatelessWidget {
               decoration: InputDecoration(
                 icon: Icon(Icons.monetization_on, color: Colors.green),
                 labelText: 'Valor R\$',
+                hintStyle: TextStyle(color: Colors.grey),
                 hintText: '0.00',
               ),
               keyboardType: TextInputType.number,
@@ -68,9 +70,12 @@ class FormularioTransferencia extends StatelessWidget {
             child: Text('Confirmar'),
             onPressed: () {
               debugPrint('clicou no confirmar');
-              final int numeroConta = int.parse(_controladorCampoNumeroConta.text);
-              final double valor = double.parse(_controladorCampoValor.text);
-              Transferencia(valor, numeroConta);
+              final int? numeroConta = int.tryParse(_controladorCampoNumeroConta.text);
+              final double? valor = double.tryParse(_controladorCampoValor.text);
+              if(numeroConta != null && valor != null){
+                final transferenciaCriada = Transferencia(valor, numeroConta);
+                debugPrint('$transferenciaCriada');
+              }
             },
           ),
         ],
@@ -97,7 +102,7 @@ class ListaTransferencias extends StatelessWidget {
       body: Column(
         children: [
           ItemTransferencia(
-            Transferencia(1500.50, 6874),
+            Transferencia(100.0, 1000),
           ),
         ],
       ),
@@ -133,4 +138,9 @@ class Transferencia {
   final int numeroConta;
 
   Transferencia(this.valor, this.numeroConta);
+
+  @override
+  String toString() {
+    return 'Transferencia{valor: $valor, numeroConta: $numeroConta}';
+  }
 }
