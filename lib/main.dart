@@ -54,6 +54,7 @@ class FormularioTransferencia extends StatelessWidget {
             child: Text('Confirmar'),
             onPressed: () {
               _criaTransferencia(
+                context,
                 _controladorCampoNumeroConta,
                 _controladorCampoValor,
               );
@@ -65,6 +66,7 @@ class FormularioTransferencia extends StatelessWidget {
   }
 
   void _criaTransferencia(
+    BuildContext context,
     controladorCampoNumeroConta,
     controladorCampoValor,
   ) {
@@ -73,6 +75,7 @@ class FormularioTransferencia extends StatelessWidget {
     if (numeroConta != null && valor != null) {
       final transferenciaCriada = Transferencia(valor, numeroConta);
       debugPrint('$transferenciaCriada');
+      Navigator.pop(context, transferenciaCriada);
     }
   }
 }
@@ -113,6 +116,7 @@ class Editor extends StatelessWidget {
 
 class ListaTransferencias extends StatelessWidget {
   ListaTransferencias({super.key});
+  final List<Transferencia> _transferencias = [];
 
   @override
   Widget build(BuildContext context) {
@@ -129,26 +133,30 @@ class ListaTransferencias extends StatelessWidget {
           ),
         ),
       ),
-      body: Column(
-        children: [
-          ItemTransferencia(
-            Transferencia(
-              100.0,
-              1000,
-            ),
-          ),
-        ],
+      body: ListView.builder(
+        itemCount: _transferencias.length,
+        itemBuilder: (context, indice){
+          final tranferencia = _transferencias[indice];
+          return ItemTransferencia(tranferencia);
+        },
       ),
       floatingActionButton: FloatingActionButton(
         backgroundColor: Colors.blue,
         onPressed: () {
-          Navigator.push(
+          final Future<Transferencia?> future = Navigator.push(
             context,
             MaterialPageRoute(
               builder: (context) {
                 return FormularioTransferencia();
               },
             ),
+          );
+          future.then(
+            (transferenciaRecebida) {
+              debugPrint('chegou no then do future');
+              debugPrint('$transferenciaRecebida');
+              _transferencias.add(transferenciaRecebida!);
+            },
           );
         },
         child: Icon(
