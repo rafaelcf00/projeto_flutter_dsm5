@@ -142,9 +142,14 @@ class ListaTransferencias extends StatelessWidget {
       floatingActionButton: FloatingActionButton(
         backgroundColor: Colors.blue,
         onPressed: () {
-          Navigator.push(context,MaterialPageRoute(builder: (context){
-            return FormularioTransferencia();
-          }));
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) {
+                return FormularioTransferencia();
+              },
+            ),
+          );
         },
         child: Icon(
           Icons.add,
