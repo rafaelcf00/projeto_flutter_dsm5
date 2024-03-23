@@ -9,18 +9,19 @@ class BankApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
-        body: FormularioTransferencia(),
+        body: ListaTransferencias(),
       ),
     );
   }
 }
 
 class FormularioTransferencia extends StatelessWidget {
-  final TextEditingController _controladorCampoNumeroConta = TextEditingController();
+  final TextEditingController _controladorCampoNumeroConta =
+      TextEditingController();
   final TextEditingController _controladorCampoValor = TextEditingController();
 
   FormularioTransferencia({super.key});
-  
+
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
@@ -30,55 +31,81 @@ class FormularioTransferencia extends StatelessWidget {
         title: Text(
           'Nova Transferência',
           style: TextStyle(
-              color: Colors.white, fontSize: 30, fontWeight: FontWeight.bold),
+            color: Colors.white,
+            fontSize: 30,
+            fontWeight: FontWeight.bold,
+          ),
         ),
       ),
       body: Column(
         children: [
-          Padding(
-            padding: EdgeInsets.all(16.0),
-            child: TextField(
-              controller: _controladorCampoNumeroConta,
-              style: TextStyle(
-                fontSize: 20.0,
-              ),
-              decoration: InputDecoration(
-                labelText: 'Número da conta',
-                hintStyle: TextStyle(color: Colors.grey),
-                hintText: '0000',
-              ),
-              keyboardType: TextInputType.number,
-            ),
+          Editor(
+            controlador: _controladorCampoNumeroConta,
+            rotulo: 'Numero da Conta',
+            dica: '0000',
           ),
-          Padding(
-            padding: EdgeInsets.all(16.0),
-            child: TextField(
-              controller: _controladorCampoValor,
-              style: TextStyle(
-                fontSize: 20.0,
-              ),
-              decoration: InputDecoration(
-                icon: Icon(Icons.monetization_on, color: Colors.green),
-                labelText: 'Valor R\$',
-                hintStyle: TextStyle(color: Colors.grey),
-                hintText: '0.00',
-              ),
-              keyboardType: TextInputType.number,
-            ),
+          Editor(
+            controlador: _controladorCampoValor,
+            rotulo: 'Valor',
+            dica: '0.00',
+            icone: Icons.monetization_on,
           ),
           ElevatedButton(
             child: Text('Confirmar'),
             onPressed: () {
-              debugPrint('clicou no confirmar');
-              final int? numeroConta = int.tryParse(_controladorCampoNumeroConta.text);
-              final double? valor = double.tryParse(_controladorCampoValor.text);
-              if(numeroConta != null && valor != null){
-                final transferenciaCriada = Transferencia(valor, numeroConta);
-                debugPrint('$transferenciaCriada');
-              }
+              _criaTransferencia(
+                _controladorCampoNumeroConta,
+                _controladorCampoValor,
+              );
             },
           ),
         ],
+      ),
+    );
+  }
+
+  void _criaTransferencia(
+    controladorCampoNumeroConta,
+    controladorCampoValor,
+  ) {
+    final int? numeroConta = int.tryParse(controladorCampoNumeroConta.text);
+    final double? valor = double.tryParse(controladorCampoValor.text);
+    if (numeroConta != null && valor != null) {
+      final transferenciaCriada = Transferencia(valor, numeroConta);
+      debugPrint('$transferenciaCriada');
+    }
+  }
+}
+
+class Editor extends StatelessWidget {
+  final TextEditingController? controlador;
+  final String? rotulo;
+  final String? dica;
+  final IconData? icone;
+
+  Editor({super.key, this.controlador, this.rotulo, this.dica, this.icone});
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.all(16.0),
+      child: TextField(
+        controller: controlador,
+        style: TextStyle(
+          fontSize: 20.0,
+        ),
+        decoration: InputDecoration(
+          icon: icone != null
+              ? Icon(
+                  icone,
+                  color: Colors.green,
+                )
+              : null,
+          labelText: rotulo,
+          hintStyle: TextStyle(color: Colors.grey),
+          hintText: dica,
+        ),
+        keyboardType: TextInputType.number,
       ),
     );
   }
@@ -96,20 +123,33 @@ class ListaTransferencias extends StatelessWidget {
         title: Text(
           'Transferências',
           style: TextStyle(
-              color: Colors.white, fontSize: 30, fontWeight: FontWeight.bold),
+            color: Colors.white,
+            fontSize: 30,
+            fontWeight: FontWeight.bold,
+          ),
         ),
       ),
       body: Column(
         children: [
           ItemTransferencia(
-            Transferencia(100.0, 1000),
+            Transferencia(
+              100.0,
+              1000,
+            ),
           ),
         ],
       ),
       floatingActionButton: FloatingActionButton(
         backgroundColor: Colors.blue,
-        onPressed: () {},
-        child: Icon(Icons.add, color: Colors.white),
+        onPressed: () {
+          Navigator.push(context,MaterialPageRoute(builder: (context){
+            return FormularioTransferencia();
+          }));
+        },
+        child: Icon(
+          Icons.add,
+          color: Colors.white,
+        ),
       ),
     );
   }
