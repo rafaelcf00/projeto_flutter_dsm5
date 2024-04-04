@@ -136,8 +136,8 @@ class ListaTransferencias extends StatelessWidget {
       body: ListView.builder(
         itemCount: _transferencias.length,
         itemBuilder: (context, indice){
-          final tranferencia = _transferencias[indice];
-          return ItemTransferencia(tranferencia);
+          final transferencia = _transferencias[indice];
+          return ItemTransferencia(transferencia);
         },
       ),
       floatingActionButton: FloatingActionButton(
